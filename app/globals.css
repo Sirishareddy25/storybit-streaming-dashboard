@@ -24,3 +24,138 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+html, body {
+  background-color: #0a0a0a; /* very dark */
+  color: white;              /* default text color */
+}
+/* Preloader styles */
+.preloader-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(180deg, rgba(0,0,0,0.95), rgba(0,0,0,0.9));
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  transition: opacity 220ms ease;
+}
+
+/* spinner */
+.preloader-spinner {
+  width: 68px;
+  height: 68px;
+  border-radius: 9999px;
+  border: 6px solid rgba(255,255,255,0.08);
+  border-top-color: #fb7185; /* rose-400 */
+  animation: preloader-rotate 1s linear infinite;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.6), inset 0 2px 4px rgba(255,255,255,0.03);
+}
+
+@keyframes preloader-rotate {
+  to { transform: rotate(360deg); }
+}
+
+/* optional small responsive tweaks */
+@media (max-width: 640px) {
+  .preloader-spinner { width: 56px; height: 56px; border-width: 5px; }
+}
+/* Hide scrollbar for horizontal rows (Chrome, Edge, Safari) */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for Firefox */
+.scrollbar-hide {
+  scrollbar-width: none;
+}
+
+/* Optional: smoother scrolling experience on horizontal rows */
+.scrollbar-hide {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+/* Hide scrollbar */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  scrollbar-width: none;
+}
+
+/* Tooltip animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+.animate-fadeIn {
+  animation: fadeIn 0.25s ease-out;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  scrollbar-width: none;
+}
+/* Smooth dropdown animation */
+@keyframes dropdown {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0px) scale(1);
+  }
+}
+.animate-dropdown {
+  animation: dropdown 0.2s ease-out forwards;
+}
+
+/* Dropdown item hover */
+.dropdown-item {
+  display: block;
+  padding: 10px 12px;
+  border-radius: 6px;
+  color: white;
+  transition: background 0.15s;
+}
+.dropdown-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+/* nav link base style used by the header */
+.nav-link {
+  color: rgba(255,255,255,0.85);
+  padding: 6px 8px;
+  border-radius: 6px;
+  transition: color .15s, background .15s, transform .15s;
+}
+.nav-link:hover {
+  color: #fff;
+  background: rgba(255,255,255,0.03);
+  transform: translateY(-1px);
+}
+
+/* small utility for nicer drop shadow */
+.header-shadow {
+  box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+}
+/* globals.css additions (only once) */
+
+/* Hide scrollbar */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+
+/* Dropdown/tooltip animations */
+@keyframes dropdown { from { opacity:0; transform: translateY(-6px) scale(.98);} to { opacity:1; transform: translateY(0) scale(1);} }
+.animate-dropdown { animation: dropdown .18s ease-out both; }
+
+/* nav link */
+.nav-link { color: rgba(255,255,255,.88); padding: 6px 8px; border-radius: 6px; transition: color .12s, background .12s, transform .12s; }
+.nav-link:hover { color: #fff; background: rgba(255,255,255,0.03); transform: translateY(-1px); }
