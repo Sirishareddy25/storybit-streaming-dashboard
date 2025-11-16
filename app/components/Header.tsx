@@ -28,14 +28,17 @@ export default function Header() {
     return () => document.removeEventListener("click", onDoc);
   }, []);
 
+  // small helper for nav-link classes (keeps them consistent)
+  const navLink = "text-white/90 hover:text-rose-500 transition-colors relative px-2 py-1";
+
   return (
     <header
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-200 ${
-        scrolled ? "bg-black/95 backdrop-blur-md py-2" : "bg-black/70 backdrop-blur-sm py-4"
-      } border-b border-white/5`}
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-200
+        ${scrolled ? "bg-black/95 backdrop-blur-md py-2" : "bg-black/80 backdrop-blur-sm py-4"}
+        border-b border-white/5`}
     >
       <div className="max-w-7xl mx-auto px-4 md:px-8 flex items-center gap-6">
-        {/* Left: Logo */}
+        {/* Left: Logo + primary nav */}
         <div className="flex items-center gap-6">
           <Link href="/" className="flex items-center gap-3">
             <span className="text-3xl md:text-4xl font-extrabold tracking-tight text-rose-600 select-none">
@@ -43,45 +46,66 @@ export default function Header() {
             </span>
           </Link>
 
-          {/* Desktop primary nav (compact like Netflix) */}
-          <nav className="hidden lg:flex items-center gap-6 ml-6">
-            <Link href="/" className="nav-link">
-              Home
+          {/* Desktop primary nav */}
+          <nav className="hidden lg:flex items-center gap-4 ml-4">
+            <Link href="/" className={`${navLink} group`}>
+              <span className="relative">
+                Home
+                <span className="nav-underline" aria-hidden />
+              </span>
             </Link>
-            <Link href="/trending" className="nav-link">
-              Trending
+
+            <Link href="/trending" className={`${navLink} group`}>
+              <span className="relative">
+                Trending
+                <span className="nav-underline" aria-hidden />
+              </span>
             </Link>
-            <Link href="/faq" className="nav-link">
-              FAQ
+
+            <Link href="/faq" className={`${navLink} group`}>
+              <span className="relative">
+                FAQ
+                <span className="nav-underline" aria-hidden />
+              </span>
             </Link>
-            <Link href="/my-list" className="nav-link">
-              My List
+
+            <Link href="/my-list" className={`${navLink} group`}>
+              <span className="relative">
+                My List
+                <span className="nav-underline" aria-hidden />
+              </span>
             </Link>
           </nav>
         </div>
 
-        {/* Center spacer — keeps nav centered-ish */}
+        {/* Center spacer */}
         <div className="flex-1" />
 
         {/* Right actions */}
         <div className="flex items-center gap-3 md:gap-4">
-          {/* Search icon — links to /search */}
-          <Link
-            href="/search"
-            aria-label="Search"
-            className="hidden md:flex items-center justify-center w-10 h-10 rounded hover:bg-white/6 transition text-white/90"
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="opacity-90">
-              <circle cx="11" cy="11" r="6" stroke="currentColor" strokeWidth="2" />
-              <path d="M21 21l-4.35-4.35" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-            </svg>
-          </Link>
+          {/* Desktop search input */}
+          <div className="hidden md:flex items-center">
+            <form role="search" action="/search" className="relative">
+              <input
+                name="q"
+                placeholder="Search..."
+                className="w-56 md:w-64 px-3 py-2 bg-white/6 rounded-lg outline-none text-white placeholder:text-white/60 transition focus:bg-white/10"
+              />
+              <button
+                type="submit"
+                className="absolute right-1 top-1/2 -translate-y-1/2 px-2 py-1 rounded hover:bg-white/10 text-white/80"
+                aria-label="Search"
+              >
+                🔍
+              </button>
+            </form>
+          </div>
 
-          {/* Kids label (optional) */}
+          {/* Kids label (desktop) */}
           <Link
             href="#"
             onClick={(e) => e.preventDefault()}
-            className="hidden md:inline-block px-3 py-1 rounded text-sm font-medium hover:bg-white/6 transition"
+            className="hidden md:inline-block px-3 py-1 rounded text-sm font-medium hover:bg-white/6 transition text-white/90"
           >
             Kids
           </Link>
@@ -92,20 +116,20 @@ export default function Header() {
             aria-label="Notifications"
             title="Notifications"
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="opacity-90">
               <path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118.6 14.6V11a6 6 0 10-12 0v3.6c0 .538-.214 1.055-.595 1.505L4 17h5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </button>
 
-          {/* Profile */}
+          {/* Profile initial + dropdown */}
           <div className="relative" ref={profileRef}>
             <button
               onClick={() => setProfileOpen((s) => !s)}
               aria-expanded={profileOpen}
               className="flex items-center gap-2 px-2 py-1 rounded hover:bg-white/6 transition"
             >
-              {/* circular initial — replace with <Image> if you want an avatar */}
-              <div className="w-9 h-9 rounded flex items-center justify-center bg-zinc-200 text-black font-bold">
+              {/* circular initial */}
+              <div className="w-9 h-9 rounded-full flex items-center justify-center bg-zinc-100 text-black font-bold">
                 S
               </div>
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" className="text-white/80">
@@ -115,9 +139,8 @@ export default function Header() {
 
             {/* Dropdown */}
             <div
-              className={`absolute right-0 mt-2 w-56 bg-zinc-900 border border-white/10 rounded-md shadow-xl transform origin-top-right transition-all ${
-                profileOpen ? "opacity-100 scale-100 pointer-events-auto" : "opacity-0 scale-95 pointer-events-none"
-              }`}
+              className={`absolute right-0 mt-2 w-56 bg-zinc-900 border border-white/10 rounded-md shadow-xl transform origin-top-right transition-all
+                ${profileOpen ? "opacity-100 scale-100 pointer-events-auto" : "opacity-0 scale-95 pointer-events-none"}`}
               role="menu"
             >
               <div className="p-3 border-b border-white/6">
@@ -139,7 +162,7 @@ export default function Header() {
                 </Link>
 
                 <button
-                  onClick={() => { /* sign out */ }}
+                  onClick={() => { /* sign out placeholder */ }}
                   className="w-full text-left px-3 py-2 rounded hover:bg-white/5"
                 >
                   Sign out
